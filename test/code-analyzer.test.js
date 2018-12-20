@@ -102,14 +102,14 @@ describe('The javascript parser', () => {
     //////work 2
     it('1 check function with string input and size of ', () => {
         var input='function foo (x,y){\n' +
-        'let c = \'oran\';\n' +
-        'let b = x;\n' +
-        'if(x === b){\n' +
-        'return 1;\n' +
-        '}else{\n' +
-        'return 0;\n' +
-        '}\n' +
-        '}';
+            'let c = \'oran\';\n' +
+            'let b = x;\n' +
+            'if(x === b){\n' +
+            'return 1;\n' +
+            '}else{\n' +
+            'return 0;\n' +
+            '}\n' +
+            '}';
         initTable();
         initCounter();
         var parsedCode=parseCode(input);
@@ -123,14 +123,14 @@ describe('The javascript parser', () => {
 
     it('2 check function with int input and size of and map colors ', () => {
         var input='function foo (x,y,z){\n' +
-        'let a = x + 1;\n' +
-        'let b = y;\n' +
-        'if(a<b){\n' +
-        'return 1;\n' +
-        '}else{\n' +
-        'return 0;\n' +
-        '}\n' +
-        '}';
+            'let a = x + 1;\n' +
+            'let b = y;\n' +
+            'if(a<b){\n' +
+            'return 1;\n' +
+            '}else{\n' +
+            'return 0;\n' +
+            '}\n' +
+            '}';
         initTable();
         initCounter();
         var parsedCode=parseCode(input);
