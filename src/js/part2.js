@@ -116,19 +116,16 @@ function parsFunctionDeclaration(code,dic,bool) {
 }
 
 function parsIdentifier(code,dic,bool) {
-    if(code.type == 'Identifier'){
-        return code.name;
-    }
+    return code.name;
 }
 
 function parsBlockStatement(code,dic,bool) {
-    if (code.body != null)
-    {
-        var i;
-        for( i=0;i<code.body.length;i++){
-            parser(code.body[i],dic,bool);
-        }
+
+    var i;
+    for( i=0;i<code.body.length;i++){
+        parser(code.body[i],dic,bool);
     }
+
 
 }
 
@@ -152,22 +149,19 @@ function checkVarDec(name,value,tempDic) {
     return finalVal;
 }
 function parsVariableDeclaration(code,dic,bool) {
-    if(code.declarations != null){
-        var i; var val;
-        for(i=0;i<code.declarations.length;i++){
-            let name = parser(code.declarations[i].id,dic,bool);
-            if(code.declarations[i].init ==null){
-                val = code.declarations[i].init;
-            }
-            else{val = parser(code.declarations[i].init,dic,bool);}
-            let finalVal = checkVarDec(name,val,dic);
-            dic[name] = finalVal;
-            table.push({ Line: counter, Type: code.type , Name:name ,Condition:'', Value: val});
+    var i; var val;
+    for(i=0;i<code.declarations.length;i++){
+        let name = parser(code.declarations[i].id,dic,bool);
+        if(code.declarations[i].init ==null){
+            val = code.declarations[i].init;
         }
-        deepCopy(dic);
-        counter++;
+        else{val = parser(code.declarations[i].init,dic,bool);}
+        let finalVal = checkVarDec(name,val,dic);
+        dic[name] = finalVal;
+        table.push({ Line: counter, Type: code.type , Name:name ,Condition:'', Value: val});
     }
-
+    deepCopy(dic);
+    counter++;
 }
 
 function parsExpressionStatement(code,dic,bool) {
@@ -210,13 +204,13 @@ function parsLiteral(code,dic,bool) {
 
 function checkOrAnd(cond) {
     if(cond.includes('||')){
-        let arr = cond.split('|')
+        let arr = cond.split('|');
         let size = arr[0].length;
         let left = arr[0].substring(0,size-1);
         let right = arr[arr.length-1].substring(1);
         return left + ' || ' + right;
     }else if(cond.includes('&&')){
-        let arr = cond.split('&')
+        let arr = cond.split('&');
         let size = arr[0].length;
         let left = arr[0].substring(0,size-1);
         let right = arr[arr.length-1].substring(1);
@@ -240,9 +234,9 @@ function parsIfStatement(code,dic,bool) {
     let tempDic = {};
     for(var key in dic) {
         var value = dic[key];
-        tempDic[key] = value;}
-    if(code.consequent != null)
-        parser(code.consequent,dic,bool);
+        tempDic[key] = value;
+    }
+    parser(code.consequent,dic,bool);
     dic = tempDic;
     if(code.alternate != null)
         lastAlternate(code.alternate,dic,bool);
@@ -264,9 +258,9 @@ function parsElseStatement(code,dic,bool) {
     let tempDic = {};
     for(var key in dic) {
         var value = dic[key];
-        tempDic[key] = value;}
-    if(code.consequent != null)
-        parser(code.consequent,dic,bool);
+        tempDic[key] = value;
+    }
+    parser(code.consequent,dic,bool);
     dic = tempDic;
     if(code.alternate != null) {
         lastAlternate(code.alternate, dic, bool);
@@ -304,30 +298,6 @@ function parsMemberExpression(code,dic,bool) {
     return (ob + '[' + pro + ']');
 }
 
-function parsForStatement(code,dic,bool){
-    let init = parser(code.init,dic,bool);
-    let test = parser(code.test,dic,bool);
-    let up = parser(code.update,dic,bool);
-    let con = init + ';' + test + ';' + up;
-    table.push({ Line: counter, Type: code.type , Name: '' ,Condition: con, Value: ''});
-    deepCopy(dic);
-    counter++;
-    parser(code.body,dic,bool);
-
-
-}
-
-function parsUpdateExpression(code,dic,bool) {
-    let val = parser(code.argument,dic,bool);
-    if(code.prefix == true)
-    {
-        return (code.operator + val);
-    }
-    else{
-        return(val+code.operator);
-    }
-
-}
 
 function parsLogicalExpression(code,dic,bool){
     var left = parser(code.left,dic,bool);
@@ -512,7 +482,5 @@ let dictionary = {
     'ReturnStatement': parsReturnStatement,
     'UnaryExpression': parsUnaryExpression,
     'MemberExpression': parsMemberExpression,
-    'ForStatement': parsForStatement,
-    'UpdateExpression': parsUpdateExpression,
     'LogicalExpression':parsLogicalExpression
 };

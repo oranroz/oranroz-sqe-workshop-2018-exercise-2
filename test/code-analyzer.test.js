@@ -376,4 +376,45 @@ describe('The javascript parser', () => {
         assert.equal(MapC[0],true);
     });
 
+    it('11 check function with while and one if', () => {
+        var input='function foo(x,y){\n' +
+            'while(x<y){\n' +
+            'if(x == 2)\n' +
+            '{\n' +
+            'return 1;\n' +
+            '}\n' +
+            '}\n' +
+            '}';
+        initTable();
+        initCounter();
+        var parsedCode=parseCode(input);
+        initMapV();
+        inputVariable('x=2,y=1');
+        start(parsedCode);
+        let finalCode = validationCode(input);
+        let MapC = getColorMap();
+        var result='while(x<y){';
+        assert.equal(finalCode[1],result);
+        assert.equal(MapC[0],true);
+    });
+});
+
+it('12 check function with || in the if', () => {
+    var input='function foo(x,y){\n' +
+        'if(x == 2 || y ==2)\n' +
+        '{\n' +
+        'return 1;\n' +
+        '}\n' +
+        '}\n';
+    initTable();
+    initCounter();
+    var parsedCode=parseCode(input);
+    initMapV();
+    inputVariable('x=2,y=1');
+    start(parsedCode);
+    let finalCode = validationCode(input);
+    let MapC = getColorMap();
+    var result='if(x == 2 || y ==2)';
+    assert.equal(finalCode[1],result);
+    assert.equal(MapC[0],true);
 });
